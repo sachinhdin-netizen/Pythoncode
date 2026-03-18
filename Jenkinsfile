@@ -25,8 +25,12 @@ pipeline {
                 sh 'pytest tests/'
             }
         }
-
-        stage('Build') {
+        stage ('Run App') {
+            steps {
+                sh 'python3 main.py'
+            }
+        }
+                stage('Build') {
             steps {
                 sh 'echo "Building application..."'
             }
