@@ -1,30 +1,53 @@
-pipeline (
-}
-agent any
-stages (
-stage('Checkout') {
-steps (
-git branch: 'main',
-url: 'https://github.com/<your-username>/<your-repo>.git'
-stage('Install Dependencies') (
-steps (
-pip3 install -r requirements.txt
-}
-stage('Run Tests') (
-steps {
-python3 -m unittest discover
-}
-)
-stage('Package Application') {
-steps (
-zip -r app.zip.
-}
-}
-stage('Deployment') (
-steps {
-}
-echo "Deploy step customize for production!"
-post [
-success (echo "Build Successful!") failure (echo "Build Failed!")
-}
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "sample-python-app"
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/sachinhdin-netigen/Pythoncode.git'
+            }
+        }
+
+        stage('Setup Python') {
+            steps {
+                sh 'python3 --version'
+                sh 'pip3 install -r requirements.txt'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'pytest tests/'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'echo "Building application..."'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying application..."'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
 }
