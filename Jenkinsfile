@@ -9,7 +9,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/your-username/your-python-repo.git'
+                git 'https://github.com/sachinhdin-netigen/Pythoncode.git'
             }
         }
 
