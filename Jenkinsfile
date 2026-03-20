@@ -26,6 +26,7 @@ pipeline {
                 echo "Starting Hello World server..."
                 sh '''
                     nohup python3 -u main.py > server.log 2>&1 &
+                    echo $! > server.pid
                 '''
             }
         }
@@ -52,6 +53,13 @@ pipeline {
 
     post {
         always {
+            echo 'Cleaning up server process...'
+            sh '''
+                if [ -f server.pid ]; then
+                    kill $(cat server.pid) || true
+                    rm -f server.pid
+                fi
+            '''
             echo 'Pipeline completed.'
         }
         success {
