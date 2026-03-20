@@ -6,39 +6,51 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/sachinhdin-netigen/Pythoncode.git'
+                git 'https://github.com/sachinhdin-netizen/Pythoncode.git'
             }
         }
 
         stage('Setup Python') {
             steps {
-                sh 'python3 --version'
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                    python3 --version
+                    pip3 install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run App') {
+            steps {
+                echo "Running main.py..."
+                sh 'python3 main.py'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest tests/'
+                echo "Running unit tests..."
+                // Option 1: Using unittest
+                sh 'python3 -m unittest discover -s tests -p "test_*.py"'
+
+                // Option 2 (better reporting): Uncomment below if you install pytest
+                // sh 'pytest --junitxml=results.xml tests/'
+                // junit 'results.xml'
             }
         }
-        stage ('Run App') {
+
+        stage('Build') {
             steps {
-                sh 'python3 main.py'
-            }
-        }
-                stage('Build') {
-            steps {
-                sh 'echo "Building application..."'
+                echo "Building application..."
+                // Add packaging steps here if needed
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'echo "Deploying application..."'
+                echo "Deploying application..."
+                // Add real deployment steps here
             }
         }
     }
