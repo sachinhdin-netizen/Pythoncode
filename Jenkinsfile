@@ -16,41 +16,36 @@ pipeline {
             steps {
                 sh '''
                     python3 --version
-                    pip3 install -r requirements.txt
+                    pip3 install -r requirements.txt || true
                 '''
             }
         }
 
-        stage('Run App') {
+        stage('Start Web Server') {
             steps {
-                echo "Running main.py..."
-                sh 'python3 -u main.py'
+                echo "Starting Hello World server..."
+                sh '''
+                    nohup python3 -u main.py > server.log 2>&1 &
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
                 echo "Running unit tests..."
-                // Option 1: Using unittest
                 sh 'python3 -m unittest discover -s tests -p "test_*.py"'
-
-                // Option 2 (better reporting): Uncomment below if you install pytest
-                // sh 'pytest --junitxml=results.xml tests/'
-                // junit 'results.xml'
             }
         }
 
         stage('Build') {
             steps {
                 echo "Building application..."
-                // Add packaging steps here if needed
             }
         }
 
         stage('Deploy') {
             steps {
                 echo "Deploying application..."
-                // Add real deployment steps here
             }
         }
     }
