@@ -1,5 +1,6 @@
 def add(a, b):
-  return a +b
-  
-if_name_=="_main_":
-  print("Sum:", add(5,10))
+    return a + b
+
+if __name__ == "__main__":
+    print("Running main.py...")
+    print("Sum:", add(5, 10))
